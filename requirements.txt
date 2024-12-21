@@ -1,0 +1,9 @@
+aws-wsgi
+Flask
+tensorflow
+beautifulsoup4
+google
+numpy
+requests
+pickle
+language_tool_python

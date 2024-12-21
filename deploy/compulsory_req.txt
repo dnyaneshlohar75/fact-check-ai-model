@@ -1,0 +1,6 @@
+Flask
+beautifulsoup4
+google
+numpy
+requests
+tensorflow
