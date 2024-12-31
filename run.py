@@ -9,7 +9,7 @@ app.secret_key = 'your_secret_key'
 def index():
     return handle_index()
 
-@app.route("/fact-check/predict", methods=["POST"])
+@app.route("/predict", methods=["POST"])
 def predict():
     print("---------Predict Handler---------")
     return handle_predict()
@@ -18,6 +18,6 @@ def predict():
 if __name__ == "__main__":
     app.run(debug=True)
 
-def lambda_handler(event, context):
-    return awsgi.response(app, event, context, base64_content_types={"image/png"})
+# def lambda_handler(event, context):
+#     return awsgi.response(app, event, context, base64_content_types={"image/png"})
     
