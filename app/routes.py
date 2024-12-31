@@ -8,47 +8,45 @@ main = Blueprint('main', __name__)
 
 model, tokenizer = load_model_and_tokenizer()
 
-truth_percentage = None
-false_percentage = None
-error = None
-urls = []
-query = None
-corrected_query = None
-label = None
-confidence = None
-converse_query = None
-converse_label = None
-converse_confidence = None
+def handle_index():
+    truth_percentage = None
+    false_percentage = None
+    error = None
+    urls = []
+    query = None
+    corrected_query = None
+    label = None
+    confidence = None
+    converse_query = None
+    converse_label = None
+    converse_confidence = None
 
-def handle_predict():
-    input_type = request.form.get("input_type")  # 'news' or 'other'
-    image = request.files.get("image")
-    user_query = request.form.get("query")
+    if request.method == "POST":
+        input_type = request.form.get("input_type")  # 'news' or 'other'
+        image = request.files.get("image")
+        user_query = request.form.get("query")
 
+        if image and not user_query:
+            try:
+                user_query = extract_text_from_image(image)
+                print("Extracted text:", user_query)
+            except Exception as e:
+                print(f"Error extracting text from image: {e}")
+                error = "Failed to process the uploaded image."
+                return render_template("index.html", error=error)
 
-    print(f"input type: {input_type}")
-    print(f"user_query: ${user_query}")
-
-    if image and not user_query:
-        try:
-            user_query = extract_text_from_image(image)
-            print("Extracted text:", user_query)
-        except Exception as e:
-            print(f"Error extracting text from image: {e}")
-            error = "Failed to process the uploaded image."
+        if not user_query:
+            error = "Please enter a claim or upload an image."
             return render_template("index.html", error=error)
 
-    if not user_query:
-        error = "Please enter a claim or upload an image."
-        return render_template("index.html", error=error)
+        # corrected_query = correct_grammar()
+        corrected_query = user_query
+        converse_query = generate_converse(corrected_query)
 
-    corrected_query = user_query
-    converse_query = generate_converse(user_query)
-
-    if input_type == "news":
-        urls = fetch_news_articles(corrected_query, num_results=5)
-        if not urls:  # Fallback to Google search
-            urls = google_search(corrected_query, num_results=5)
+        if input_type == "news":
+            urls = fetch_news_articles(corrected_query, num_results=5)
+            if not urls:  # Fallback to Google search
+                urls = google_search(corrected_query, num_results=5)
         else:
             urls = google_search(corrected_query, num_results=5)
 
@@ -59,11 +57,11 @@ def handle_predict():
         else:
             urls = google_search(corrected_query, num_results=5)
 
-        print(urls)
+
 
         if not urls:
             error = "No search results found."
-            return render_template("index.html", error=error, truth_percentage = 0, false_percentage = 0)
+            return render_template("index.html", error=error)
 
         session['urls'] = urls
 
@@ -74,8 +72,6 @@ def handle_predict():
         false_percentage = round(100 - truth_percentage, 2)
 
         is_true = truth_percentage > 50
-
-        error = ''
 
         return render_template(
             "index.html",
@@ -93,7 +89,6 @@ def handle_predict():
             error=error
         )
 
-def handle_index():
     return render_template(
         "index.html",
         truth_percentage=truth_percentage,
