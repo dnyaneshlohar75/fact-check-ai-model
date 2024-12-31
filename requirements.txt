@@ -1,17 +1,9 @@
-<<<<<<< HEAD
-aws-wsgi
-googlesearch-python
-pillow
-pytesseract
-beautifulsoup4
-# language-tool-python
-=======
 Flask
 tensorflow
-beautifulsoup4
-google
-numpy
 requests
-language_tool_python
-gunicorn
->>>>>>> 8a7f3ae942a46d732e85350092be288d1443f0f5
+pillow
+google
+pytesseract
+beautifulsoup4
+googlesearch-python
+aws-wsgi

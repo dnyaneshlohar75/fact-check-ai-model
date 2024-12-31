@@ -7,10 +7,8 @@ import pickle
 import re
 import requests
 from bs4 import BeautifulSoup
-import language_tool_python
 from PIL import Image, ImageEnhance, ImageFilter
 import pytesseract  # OCR library
-import awsgi
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -146,7 +144,8 @@ def index():
             return render_template("index.html", error=error)
 
         # corrected_query = correct_grammar(user_query)
-        converse_query = generate_converse(user_query)
+        corrected_query = user_query
+        converse_query = generate_converse(corrected_query)
 
         if input_type == "news":
             urls = fetch_news_articles(corrected_query, num_results=5)
@@ -192,8 +191,5 @@ def index():
         error=error
     )
 
-# if __name__ == "__main__":
-#     app.run(debug=True)
-
-def lambda_handler(event, context):
-    return awsgi.response(app, event, context, base64_content_types={"image/png"})
+if __name__ == "__main__":
+    app.run(debug=True)

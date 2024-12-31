@@ -79,7 +79,6 @@ def fetch_current_data(query, num_results=5):
         return []
 
 
-
 # def correct_grammar(text):
 #     tool = language_tool_python.LanguageTool('en-IN')
 #     matches = tool.check(text)

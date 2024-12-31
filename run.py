@@ -1,4 +1,4 @@
-from flask import Flask, redirect
+from flask import Flask
 from app.routes import handle_index, handle_predict
 import awsgi
 
@@ -20,3 +20,4 @@ if __name__ == "__main__":
 
 def lambda_handler(event, context):
     return awsgi.response(app, event, context, base64_content_types={"image/png"})
+    
