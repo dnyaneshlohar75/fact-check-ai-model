@@ -1,9 +1,6 @@
 aws-wsgi
-Flask
-tensorflow
+googlesearch-python
+pillow
+pytesseract
 beautifulsoup4
-google
-numpy
-requests
-pickle
-language_tool_python
+# language-tool-python

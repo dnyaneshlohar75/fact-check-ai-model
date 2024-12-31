@@ -37,7 +37,7 @@ model = Sequential([
     Dropout(0.5),
     Dense(64, activation='relu'),
     Dropout(0.5),
-    Dense(1, activation='sigmoid')  # Binary classification
+    Dense(1, activation='sigmoid')  #Binary
 ])
 
 # Compile the model
