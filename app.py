@@ -1,3 +1,4 @@
+import awsgi
 from flask import Flask, render_template, request, session
 from googlesearch import search
 import tensorflow as tf
@@ -111,8 +112,17 @@ def extract_text_from_image(image_file):
         print(f"Error in OCR process: {e}")
         return ""
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/", methods=["GET"])
 def index():
+    return render_template(
+        "index.html",
+        truth_percentage=None,
+        false_percentage=None,
+        error=""
+    )
+@app.route("/fact-check", methods=["GET", "POST"])
+
+def fact_check():
     truth_percentage = None
     false_percentage = None
     error = None
@@ -130,6 +140,7 @@ def index():
         image = request.files.get("image")
         user_query = request.form.get("query")
 
+        print(f"Input type: {input_type} | Query: {user_query} | Image: {image}")
         if image and not user_query:
             try:
                 user_query = extract_text_from_image(image)
@@ -184,12 +195,8 @@ def index():
             error=error
         )
 
-    return render_template(
-        "index.html",
-        truth_percentage=truth_percentage,
-        false_percentage=false_percentage,
-        error=error
-    )
-
 if __name__ == "__main__":
     app.run(debug=True)
+
+def lambda_handler(event, context):
+    return awsgi.response(app, event, context, base64_content_types={"image/jpeg"})

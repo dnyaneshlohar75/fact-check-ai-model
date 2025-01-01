@@ -1,10 +1,4 @@
-Flask
-tensorflow
-requests
-pillow
 google
-pytesseract
-beautifulsoup4
 googlesearch-python
 aws-wsgi
 gunicorn

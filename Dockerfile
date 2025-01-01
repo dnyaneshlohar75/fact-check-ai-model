@@ -1,4 +1,3 @@
-
 FROM public.ecr.aws/lambda/python:3.11
 
 COPY main_req.txt  .
@@ -13,4 +12,4 @@ COPY . "${LAMBDA_TASK_ROOT}"
 
 COPY app.py "${LAMBDA_TASK_ROOT}"
 
-RUN ["run.lambda_handler"]
+RUN ["app.lambda_handler"]
