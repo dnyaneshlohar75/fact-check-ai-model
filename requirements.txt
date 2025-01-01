@@ -2,3 +2,9 @@ google
 googlesearch-python
 aws-wsgi
 gunicorn
+Flask
+tensorflow
+requests
+pillow
+pytesseract
+beautifulsoup4
